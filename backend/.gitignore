@@ -1,17 +1,20 @@
 # Dependencies
 node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# dotenv environment variables file
+.env
+.env.test
+.env.local
+.env.producao
+.env.desenvolvimento
+.env.*
+
+
+# Build output
 dist/
-
-# Environment variables
-.env*
-
-# Logs
-*.log
-
-# IDE
+build/
+.github/
 .vscode/
-.idea/
-
-# OS
-.DS_Store
-Thumbs.db

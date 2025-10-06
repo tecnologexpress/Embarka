@@ -1,7 +1,7 @@
 import React from "react";
 import { Truck, Bot, Leaf, BarChart3, MapPin, Zap } from "lucide-react";
 import Logo from "../atoms/Logo";
-import LoginForm from "../molecules/LoginForm";
+import FormularioLogin from "../molecules/FormularioLogin";
 
 interface LoginTemplateProps {
   onLogin: (email: string, password: string) => void;
@@ -41,8 +41,8 @@ const LoginTemplate: React.FC<LoginTemplateProps> = ({
       <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           {/* Header */}
-          <div className="text-center">
-            <Logo size="large" className="mb-2" />
+          <div className="flex flex-col text-center items-center mx-auto">
+            <Logo className="mb-2 w-[300px]" />
             <p className="text-gray-600 text-lg font-medium mb-6">
               Conectando Embarcadores • Clientes • Transportadoras
             </p>
@@ -62,17 +62,17 @@ const LoginTemplate: React.FC<LoginTemplateProps> = ({
 
           {/* Login Form */}
           <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-200">
-            <LoginForm onSubmit={onLogin} loading={loading} />
+            <FormularioLogin onSubmit={onLogin} loading={loading} />
           </div>
 
           {/* Footer */}
           <div className="text-center text-sm text-gray-500">
             <p>
-              Ao continuar, você concorda com nossos{" "}
+              Ao continuar, você concorda com nossos
               <a href="#" className="text-green-600 hover:text-green-500">
                 Termos de Uso
-              </a>{" "}
-              e{" "}
+              </a>
+              e
               <a href="#" className="text-green-600 hover:text-green-500">
                 Política de Privacidade
               </a>
@@ -83,7 +83,7 @@ const LoginTemplate: React.FC<LoginTemplateProps> = ({
 
       {/* Right Side - Features */}
       <div className="hidden lg:flex lg:flex-1 bg-gradient-to-br from-green-500 via-green-600 to-green-700 text-white relative overflow-hidden">
-        <div className="flex items-center justify-center w-full px-8 relative z-10">
+        <div className="flex items-center justify-center w-full px-4 py-4 relative z-10">
           <div className="max-w-lg bg-green-700 bg-opacity-10 rounded-3xl p-8 backdrop-blur-sm">
             <h3 className="text-4xl font-bold mb-6 text-white drop-shadow-lg">
               Revolucione sua Cadeia Logística
