@@ -1,7 +1,7 @@
-import { PayloadToken } from '@/infraestrutura/token';
-import { ObterClienteIP } from '@/utils/obter-ip';
+import { obterClienteIP } from '@/utils/obter-ip';
+import { PayloadToken } from '@/utils/token-jwt';
 import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
+import jwt, { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
 
 export interface RequestAutenticado extends Request {
     token?: PayloadToken;
@@ -42,45 +42,43 @@ export function autenticarToken(
     next: NextFunction
 ): void {
     const JWT_SECRET = process.env.JWT_SECRET || '';
-
     if (!JWT_SECRET) {
         throw new Error('JWT_SECRET não está definido no ambiente');
     }
 
-    const COOKIE_TOKEN = req.cookies?.token;
-    const TOKEN = COOKIE_TOKEN; // || bearerToken;
+    // 1) pegar token do cookie OU Authorization: Bearer
+    const COOKIE_TOKEN = req.cookies?.token as string | undefined;
+    const AUTH_HEADER = req.header("authorization") || req.header("Authorization");
+    const BEARER_TOKEN = AUTH_HEADER?.startsWith("Bearer ")
+        ? AUTH_HEADER.slice(7).trim()
+        : undefined;
 
-    // Captura o IP do cliente
-    if (req.token) {
-        req.token.usuario_ip = ObterClienteIP(req);
-    }
+    const TOKEN = COOKIE_TOKEN || BEARER_TOKEN;
 
     if (!TOKEN) {
-        res.status(403).json({ error: 'Token não fornecido.' });
+        res.status(401).json({ error: "Token não fornecido." });
         return;
     }
 
     try {
+        // 2) verificar token
         const DECODIFICADO = jwt.verify(TOKEN, JWT_SECRET) as PayloadToken;
-        if (req.token) {
-            req.token.username = DECODIFICADO.username;
-            req.token.usuario_ip = DECODIFICADO.usuario_ip;
+
+        // 3) anexar ao request SEM checar req.token (pois está undefined)
+        req.token = {
+            ...DECODIFICADO,
+            usuario_ip: obterClienteIP(req),
+        };
+
+        return next();
+    } catch (err) {
+        const ERRO = err as Error;
+        let detail = "Erro interno ao validar o token.";
+        if (ERRO instanceof TokenExpiredError) {
+            detail = "O token expirou. Faça login novamente.";
+        } else if (ERRO instanceof JsonWebTokenError) {
+            detail = "Token malformado ou assinatura inválida.";
         }
-        next();
-    } catch (err: any) {
-        console.error('Falha na verificação do token:', err);
-
-        const MESSAGE = 'Token inválido ou expirado.';
-        let detail = '';
-
-        if (err instanceof jwt.TokenExpiredError) {
-            detail = 'O token expirou. Faça login novamente para renovar.';
-        } else if (err instanceof jwt.JsonWebTokenError) {
-            detail = 'O token fornecido é malformado ou não foi assinado corretamente.';
-        } else {
-            detail = 'Erro interno ao validar o token.';
-        }
-
-        res.status(403).json({ error: MESSAGE, detail });
+        res.status(401).json({ error: "Token inválido ou expirado.", detail });
     }
 }

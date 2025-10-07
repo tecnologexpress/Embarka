@@ -3,15 +3,7 @@ import { Truck, Bot, Leaf, BarChart3, MapPin, Zap } from "lucide-react";
 import Logo from "../atoms/Logo";
 import FormularioLogin from "../molecules/FormularioLogin";
 
-interface LoginTemplateProps {
-  onLogin: (email: string, password: string) => void;
-  loading?: boolean;
-}
-
-const LoginTemplate: React.FC<LoginTemplateProps> = ({
-  onLogin,
-  loading = false,
-}) => {
+const LoginTemplate: React.FC = () => {
   const features = [
     {
       icon: Truck,
@@ -62,7 +54,7 @@ const LoginTemplate: React.FC<LoginTemplateProps> = ({
 
           {/* Login Form */}
           <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-200">
-            <FormularioLogin onSubmit={onLogin} loading={loading} />
+            <FormularioLogin />
           </div>
 
           {/* Footer */}

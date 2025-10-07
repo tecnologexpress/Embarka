@@ -2,7 +2,8 @@
 import { Request, Response } from 'express';
 import { EstadoServico } from './servico';
 import { Estado } from './entidade/estado';
-import { TratarErro } from '@/infraestrutura/erros/tratar-erro';
+import { tratarErro } from '@/infraestrutura/erros/tratar-erro';
+import { extrairFiltrosDaQuery } from '@/types/filtros-query';
 
 export class EstadoControlador {
     constructor(
@@ -16,11 +17,12 @@ export class EstadoControlador {
     // EstadoControlador.ts
     async buscarTodosEstados(req: Request, res: Response) {
         try {
-            console.log("Buscando todos os estados...");
-            const RESULTADO = await this.estadoServico.buscarTodosEstados();
+            const { paginacao, ordenacao } = extrairFiltrosDaQuery(req.query);
+
+            const RESULTADO = await this.estadoServico.buscarTodosEstados(paginacao, ordenacao);
             return res.json(RESULTADO);
         } catch (error) {
-            return TratarErro(res, error, 'Erro ao buscar estados.');
+            return tratarErro(res, error, 'Erro ao buscar estados.');
         }
     }
 

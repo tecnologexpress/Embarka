@@ -15,7 +15,7 @@ import { api } from "../api";
  */
 export function useAuth() {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-    const [aceitouTermos, setAceitouTermos] = useState<boolean>(false);
+    // const [aceitouTermos, setAceitouTermos] = useState<boolean>(false);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -26,7 +26,7 @@ export function useAuth() {
                 });
 
                 if (res.status === 200) {
-                    setAceitouTermos(res.data.politica_aceita);
+                    // setAceitouTermos(res.data.politica_aceita);
                     setIsAuthenticated(true);
                 } else {
                     setIsAuthenticated(false);
@@ -41,5 +41,7 @@ export function useAuth() {
         verifyUser();
     }, []);
 
-    return { isAuthenticated, loading, aceitouTermos };
+    return { isAuthenticated, loading,
+        // aceitouTermo
+     };
 }

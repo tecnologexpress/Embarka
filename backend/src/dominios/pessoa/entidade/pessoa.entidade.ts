@@ -1,8 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, UpdateDateColumn, CreateDateColumn, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { Estado } from '../../estado/entidade/estado';
 import { Municipio } from '../../municipio/entidade/municipio';
-import { PessoaTipoRelacao } from '../../pessoa-tipo-relacao/entidade/pessoa-tipo-relacao';
-import { PessoaNaturezaJuridica } from '@/dominios/natureza-juridica/entidade/pessoa-natureza-juridica';
+import { Fornecedor } from '@/dominios/fornecedor/entidade/entidade';
+import { PessoaAcesso } from './pessoa-acesso.entidade';
 
 /**
  * Representa a entidade Pessoa no sistema.
@@ -73,7 +73,7 @@ export class Pessoa {
   ds_pais!: string;
 
   @Column({ type: 'varchar', length: 30, nullable: false })
-  ds_estado!: string;
+  ds_estado_abreviado!: string;
 
   @Column({ type: 'integer', nullable: false })
   nr_codigo_ibge!: number;
@@ -118,18 +118,16 @@ export class Pessoa {
   dh_atualizado_em!: Date;
 
   @ManyToOne(() => Estado, prm_estado => prm_estado.pessoas)
-  @JoinColumn({ name: 'ds_estado', referencedColumnName: 'ds_estado' })
+  @JoinColumn({ name: 'ds_estado_abreviado', referencedColumnName: 'ds_estado_abreviado' })
   estado!: Estado;
 
   @ManyToOne(() => Municipio, prm_municipio => prm_municipio.pessoas)
   @JoinColumn({ name: 'nr_codigo_ibge', referencedColumnName: 'nr_codigo_ibge' })
   municipio!: Municipio;
 
-  // Tipo de natureza, se é fisica ou juridica.
-  @OneToOne(() => PessoaNaturezaJuridica, prm_natureza => prm_natureza.pessoas)
-  pessoaNaturezaJuridica!: PessoaNaturezaJuridica;
+  @OneToOne(() => Fornecedor, prm_fornecedor => prm_fornecedor.pessoa)
+  fornecedor!: Fornecedor;
 
-  // Tipo de pessoa, se é fornecedor, cliente, etc.
-  @OneToOne(() => PessoaTipoRelacao, prm_relacao => prm_relacao.pessoa)
-  pessoa_tipo_relacoes!: PessoaTipoRelacao;
+  @OneToOne(() => PessoaAcesso, prm_pessoa_acesso => prm_pessoa_acesso.pessoa)
+  pessoaAcesso!: PessoaAcesso;
 }

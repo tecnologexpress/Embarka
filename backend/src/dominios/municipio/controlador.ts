@@ -2,7 +2,7 @@
 import { Request, Response } from 'express';
 import { ServicoMunicipio } from './servico';
 import { extrairFiltrosDaQuery } from '@/types/filtros-query';
-import { TratarErro } from '@/infraestrutura/erros/tratar-erro';
+import { tratarErro } from '@/infraestrutura/erros/tratar-erro';
 
 export class ControladorMunicipio {
     constructor(
@@ -87,7 +87,7 @@ export class ControladorMunicipio {
             const RESULTADO = await this.servicoMunicipio.listarMunicipios(paginacao, filtros, ordenacao);
             return res.json(RESULTADO);
         } catch (error) {
-            TratarErro(res, error, 'Erro ao listar municípios');
+            tratarErro(res, error, 'Erro ao listar municípios');
             return;
         }
     }

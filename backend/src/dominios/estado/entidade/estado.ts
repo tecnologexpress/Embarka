@@ -1,5 +1,5 @@
 import { Municipio } from "@/dominios/municipio/entidade/municipio";
-import { Pessoa } from "@/dominios/pessoa/entidade/entidade";
+import { Pessoa } from "@/dominios/pessoa/entidade/pessoa.entidade";
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 
 /**

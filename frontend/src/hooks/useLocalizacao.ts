@@ -16,17 +16,17 @@ export interface OptionType {
  * O hook reagirá a mudanças neste valor para buscar os municípios correspondentes.
  */
 /**
- * Hook para gerenciar a seleção de localização (UFs e municípios) em formulários.
+ * Hook para gerenciar a seleção de localização (Estados e municípios) em formulários.
  *
- * Este hook provê listas de UFs e municípios, além de estados de carregamento,
+ * Este hook provê listas de Estados e municípios, além de estados de carregamento,
  * facilitando a integração com selects dinâmicos em formulários.
  *
  * @param prm_estado_selecionado - (Opcional) Sigla da UF selecionada. Quando alterada, dispara a busca dos municípios correspondentes.
  * 
  * @returns Um objeto contendo:
- * - `ufs`: Lista de opções de UFs formatadas para uso em selects ({ value, label }).
+ * - `estados`: Lista de opções de Estados formatadas para uso em selects ({ value, label }).
  * - `municipios`: Lista de opções de municípios da UF selecionada ({ value, label }).
- * - `carregandoUfs`: Indica se a lista de UFs está sendo carregada.
+ * - `carregandoEstados`: Indica se a lista de Estados está sendo carregada.
  * - `carregandoMunicipios`: Indica se a lista de municípios está sendo carregada.
  *
  * Funcionalidades:
@@ -45,7 +45,7 @@ export const useLocalizacao = (prm_estado_selecionado?: string) => {
     const carregarEstados = useCallback(async () => {
         setCarregandoEstados(true);
         try {
-            const { resultados } = await listarEstados({ pagina_atual: 1, itens_por_pagina: 1000 });
+            const { resultados } = await listarEstados({ pagina_atual: 1, itens_por_pagina: 1000, ordenarDirecao: "ASC", ordenarColuna: "ds_estado" });
             const estadosFormatados = resultados.map((estado: any) => ({
                 value: estado.ds_estado_abreviado,
                 label: estado.ds_estado,
@@ -70,6 +70,9 @@ export const useLocalizacao = (prm_estado_selecionado?: string) => {
             const { resultados } = await listarMunicipios({
                 filtroEstadoAbreviado: estado,
                 itens_por_pagina: 1000,
+                pagina_atual: 1,
+                ordenarColuna: "ds_municipio_tom",
+                ordenarDirecao: "ASC",
             });
             const municipiosFormatados = resultados.map((m: any) => ({
                 value: m.nr_codigo_ibge,

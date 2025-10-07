@@ -1,8 +1,9 @@
+// Utilizando no formulário de registro
 export interface IPessoaDTO {
     ds_documento: string;
     ds_descricao: string;
     ds_tratamento?: string;
-    dt_origem: Date;
+    dt_origem: Date | string;
     ds_email: string;
     ds_telefone: string;
     ds_celular?: string;

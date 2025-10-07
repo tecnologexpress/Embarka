@@ -1,16 +1,14 @@
-
 import jwt from 'jsonwebtoken';
 
 export interface PayloadToken {
-  id_cadastro: number;
-  id_acesso: number;
-  username: string;
+  id_pessoa: number;
+  id_pessoa_acesso: number;
   email: string;
   usuario_ip: string;
-  role?: string[];
+  role: string;
 }
 
-export function GerarToken(payload: PayloadToken): string {
+export function gerarToken(prm_payload: PayloadToken): string {
   const JWT_SECRET = process.env.JWT_SECRET || ''; // Idealmente, defina no .env
   const EXPIRES_IN = '9h'; // ou '7d', '30m', etc.
 
@@ -18,12 +16,12 @@ export function GerarToken(payload: PayloadToken): string {
     throw new Error('JWT_SECRET não está definido no ambiente');
   }
 
-  return jwt.sign(payload, JWT_SECRET, {
+  return jwt.sign(prm_payload, JWT_SECRET, {
     expiresIn: EXPIRES_IN,
   });
 }
 
-export function VerificarToken(token: string): PayloadToken {
+export function verificarToken(prm_token: string): PayloadToken {
   const JWT_SECRET = process.env.JWT_SECRET;
 
   if (!JWT_SECRET) {
@@ -31,7 +29,7 @@ export function VerificarToken(token: string): PayloadToken {
   }
 
   try {
-    const DECODIFICADO = jwt.verify(token, JWT_SECRET) as PayloadToken;
+    const DECODIFICADO = jwt.verify(prm_token, JWT_SECRET) as PayloadToken;
     return DECODIFICADO;
   } catch (err) {
     console.error('Erro ao verificar token:', err);

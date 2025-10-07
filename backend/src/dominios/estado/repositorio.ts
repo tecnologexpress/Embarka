@@ -18,20 +18,38 @@ export class EstadoRepositorio {
      * @param prm_ordenacao Objeto com coluna e direção de ordenação.
      * @returns Resultado paginado com entidades Estado.
      */
-    async buscarTodosEstados(): Promise<ResultadoPaginado<Estado>> {
-        
+    async buscarTodosEstados(
+        prm_paginacao: {
+            pagina_atual: number;
+            itens_por_pagina: number;
+        },
+        prm_ordenacao: {
+            coluna?: string;
+            direcao?: 'ASC' | 'DESC';
+        }
+    ): Promise<ResultadoPaginado<Estado>> {
+        const { pagina_atual: PAGINA_ATUAL, itens_por_pagina: ITENS_POR_PAGINA } = prm_paginacao;
+        const { coluna: COLUNA, direcao: DIRECAO } = prm_ordenacao;
+
+        const SKIP = (PAGINA_ATUAL - 1) * ITENS_POR_PAGINA;
+        const TAKE = ITENS_POR_PAGINA;
+
+        // Define coluna de ordenação padrão
+        const COLUNA_ORDENACAO = COLUNA ? `estado.${COLUNA}` : 'estado.ds_estado';
+        const DIRECAO_ORDENACAO = DIRECAO || 'ASC';
+
         const QUERY = this.estadoRepositorio.createQueryBuilder('estado')
-            .orderBy('estado.ds_estado', 'ASC')
-            .skip(0)
-            .take(1000);
+            .orderBy(COLUNA_ORDENACAO, DIRECAO_ORDENACAO)
+            .skip(SKIP)
+            .take(TAKE);
 
         const [UFS, TOTAL] = await QUERY.getManyAndCount();
 
         return {
             resultados: UFS,
             total_itens: TOTAL,
-            pagina_atual: 1,
-            itens_por_pagina: 1000
+            pagina_atual: PAGINA_ATUAL,
+            itens_por_pagina: TAKE
         };
     }
 

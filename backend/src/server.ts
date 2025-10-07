@@ -10,7 +10,7 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:5173';
 
 // Função para inicializar o servidor
-const iniciarServidor = async () => {
+const INICIAR_SERVIDOR = async () => {
     try {
         // Inicializa conexão com banco de dados apenas se as variáveis estiverem configuradas
         if (NODE_ENV !== 'test' && process.env.DB_HOST && process.env.DB_USER && process.env.DB_PASSWORD && process.env.DB_NAME) {
@@ -33,6 +33,6 @@ const iniciarServidor = async () => {
 };
 
 // Inicia o servidor
-iniciarServidor();
+INICIAR_SERVIDOR();
 
 export default APP;

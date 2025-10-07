@@ -14,8 +14,16 @@ export class EstadoServico {
      * Busca todos os Estados com paginação, filtros e ordenação.
      */
     async buscarTodosEstados(
+        prm_paginacao: {
+            pagina_atual: number;
+            itens_por_pagina: number;
+        },
+        prm_ordenacao: {
+            coluna?: string;
+            direcao?: 'ASC' | 'DESC';
+        }
     ): Promise<ResultadoPaginado<Estado>> {
-        return this.estadoRepositorio.buscarTodosEstados();
+        return this.estadoRepositorio.buscarTodosEstados(prm_paginacao, prm_ordenacao);
     }
 
     /**

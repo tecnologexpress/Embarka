@@ -2,8 +2,8 @@
 import { Response } from "express";
 import { HttpErro } from "./http-error";
 
-export function TratarErro(res: Response, error: any, contexto: string): void {
-    console.error(`${contexto}:`, error?.message || error);
+export function tratarErro(res: Response, error: any, prm_contexto: string): void {
+    console.error(`${prm_contexto}:`, error?.message || error);
 
     if (error instanceof HttpErro) {
         res.status(error.status).json({

@@ -1,5 +1,5 @@
 import { Estado } from '@/dominios/estado/entidade/estado';
-import { Pessoa } from '@/dominios/pessoa/entidade/entidade';
+import { Pessoa } from '@/dominios/pessoa/entidade/pessoa.entidade';
 import { Entity, PrimaryGeneratedColumn, Column, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 
 @Entity('municipio')

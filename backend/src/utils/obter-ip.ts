@@ -1,6 +1,6 @@
 import { Request } from 'express';
 
-export function ObterClienteIP(req: Request): string {
+export function obterClienteIP(req: Request): string {
     const INFO_IP = req.headers['x-INFO_IP-for'];
     let ip = '';
 
