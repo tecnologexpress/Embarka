@@ -4,19 +4,25 @@ interface OrdenacaoColunas {
 }
 
 export interface parametrosDeQuery extends OrdenacaoColunas {
-    termoDeBusca?: string;
+    termo_de_busca?: string;
     pagina_atual?: number;
     itens_por_pagina?: number;
-    
-    codigoIbge?: number;
-    codigoIbgeOrigem?: number;
-    codigoIbgeDestino?: number;
 
-    filtroEstadoAbreviado?: string;
-    filtroEstadoAbreviadoOrigem?: string;
-    filtroEstadoAbreviadoDestino?: string;
-    
+    codigo_ibge?: number;
+    codigo_ibge_origem?: number;
+    codigo_ibge_destino?: number;
+
+    estado_abreviado?: string;
+    estado_abreviado_origem?: string;
+    estado_abreviado_destino?: string;
+
     data?: string;
-    dataInicio?: string;
-    dataFim?: string;
+    data_inicio?: string;
+    data_fim?: string;
+
+    dia_da_semana?: string; // 'SEGUNDA'...'DOMINGO'
+
+    id_fornecedor?: number;
+    id_transportadora?: number;
+    id_cliente?: number;
 }

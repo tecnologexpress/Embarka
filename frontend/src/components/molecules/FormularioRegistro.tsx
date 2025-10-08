@@ -548,6 +548,10 @@ const FormularioRegistro = () => {
 
       {/* Ações */}
       <div className="flex flex-col gap-4 pt-8">
+        <p className="text-start text-sm text-gray-500">
+          * Campos obrigatórios
+        </p>
+
         <div className="flex flex-row gap-4 justify-between">
           <Botao
             type="button"
@@ -567,9 +571,6 @@ const FormularioRegistro = () => {
             {loading ? "Criando conta..." : "Criar conta"}
           </Botao>
         </div>
-        <p className="text-start text-sm text-gray-500">
-          * Campos obrigatórios
-        </p>
         <p className="text-center text-sm text-gray-600 mt-4">
           Ao continuar, você concorda com nossos{" "}
           <a

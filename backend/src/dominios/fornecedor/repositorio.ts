@@ -18,4 +18,12 @@ export class FornecedorRepositorio {
     const NOVO_FORNECEDOR = this.fornecedorRepositorio.create(prm_data);
     return await this.fornecedorRepositorio.save(NOVO_FORNECEDOR);
   }
+
+  async obterFornecedorPorId(prm_id_fornecedor: number): Promise<Fornecedor | null> {
+    return this.fornecedorRepositorio.findOneBy({ id_fornecedor: prm_id_fornecedor });
+  }
+
+  async obterFornecedorPorIdPessoa(prm_id_pessoa: number): Promise<Fornecedor | null> {
+    return this.fornecedorRepositorio.findOneBy({ id_pessoa: prm_id_pessoa });
+  }
 }

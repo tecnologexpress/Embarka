@@ -3,7 +3,7 @@ import { ParsedQs } from 'qs';
 /**
  * Função extrai os valores de parâmetros de consulta (query params) de uma requisição.
  * Facilitar a padronização do recebimento dos filtros utilizados nas consultas.
- * @param query 
+ * @param prm_query 
  * @returns Retorna um objeto contendo as informações de filtros, de paginacao e
  * ordenacao extraídos da query.
  */
@@ -13,21 +13,24 @@ export function extrairFiltrosDaQuery(prm_query: ParsedQs): {
         itens_por_pagina: number;
     };
     filtros: {
-        termoDeBusca?: string;
+        termo_de_busca?: string;
         data?: Date;
-        dataInicio?: Date;
-        dataFim?: Date;
-        estadoAbreviado?: string;
+        data_inicio?: Date;
+        data_fim?: Date;
+        estado_abreviado?: string;
         municipio?: string;
-        codigoIbge?: number;
-        codigoIbgeOrigem?: number;
-        codigoIbgeDestino?: number;
-        estadoAbreviadoOrigem?: string;
-        estadoAbreviadoDestino?: string;
+        codigo_ibge?: number;
+        codigo_ibge_origem?: number;
+        codigo_ibge_destino?: number;
+        estado_abreviado_origem?: string;
+        estado_abreviado_destino?: string;
+
+        id_fornecedor?: number;
+        dia_da_semana?: string;
     };
     ordenacao: {
-        coluna?: string;
-        direcao?: 'ASC' | 'DESC';
+        ordenar_coluna?: string;
+        ordenar_direcao?: 'ASC' | 'DESC';
     }
 } {
     // Paginacao
@@ -35,32 +38,34 @@ export function extrairFiltrosDaQuery(prm_query: ParsedQs): {
     const ITENS_POR_PAGINA = Number(prm_query.itens_por_pagina) || 10;
 
     // Ordenacao
-    const COLUNA = typeof prm_query.ordenarColuna === "string" ? prm_query.ordenarColuna : undefined;
-    const DIRECAO = prm_query.ordenarDirecao === "ASC" ? "ASC" : "DESC";
+    const COLUNA = typeof prm_query.ordenar_coluna === "string" ? prm_query.ordenar_coluna : undefined;
+    const DIRECAO = prm_query.ordenar_direcao === "ASC" ? "ASC" : "DESC";
 
     // Filtros
-    const TERMO_DE_BUSCA = typeof prm_query.termoDeBusca === "string" ? prm_query.termoDeBusca : undefined;
-    
-    const ESTADO_ABREVIADO = typeof prm_query.filtroEstadoAbreviado === "string" ? prm_query.filtroEstadoAbreviado : undefined;
-    const ESTADO_ABREVIADO_ORIGEM = typeof prm_query.filtroEstadoAbreviadoOrigem === "string" ? prm_query.filtroEstadoAbreviadoOrigem : undefined;
-    const ESTADO_ABREVIADO_DESTINO = typeof prm_query.filtroEstadoAbreviadoDestino === "string" ? prm_query.filtroEstadoAbreviadoDestino : undefined;
-    
-    const CODIGO_IBGE = typeof prm_query.codigoIbge === "string" ? Number(prm_query.codigoIbge) : undefined;
-    const CODIGO_IBGE_ORIGEM = typeof prm_query.codigoIbgeOrigem === "string" ? Number(prm_query.codigoIbgeOrigem) : undefined;
-    const CODIGO_IBGE_DESTINO = typeof prm_query.codigoIbgeDestino === "string" ? Number(prm_query.codigoIbgeDestino) : undefined;
-    
+    const TERMO_DE_BUSCA = typeof prm_query.termo_de_busca === "string" ? prm_query.termo_de_busca : undefined;
+
+    const ESTADO_ABREVIADO = typeof prm_query.estado_abreviado === "string" ? prm_query.estado_abreviado : undefined;
+    const ESTADO_ABREVIADO_ORIGEM = typeof prm_query.estado_abreviado_origem === "string" ? prm_query.estado_abreviado_origem : undefined;
+    const ESTADO_ABREVIADO_DESTINO = typeof prm_query.estado_abreviado_destino === "string" ? prm_query.estado_abreviado_destino : undefined;
+
+    const CODIGO_IBGE = typeof prm_query.codigo_ibge === "string" ? Number(prm_query.codigo_ibge) : undefined;
+    const CODIGO_IBGE_ORIGEM = typeof prm_query.codigo_ibge_origem === "string" ? Number(prm_query.codigo_ibge_origem) : undefined;
+    const CODIGO_IBGE_DESTINO = typeof prm_query.codigo_ibge_destino === "string" ? Number(prm_query.codigo_ibge_destino) : undefined;
+
+    const ID_FORNECEDOR = typeof prm_query.id_fornecedor === "string" ? Number(prm_query.id_fornecedor) : undefined;
+
     const DATA = typeof prm_query.data === "string" ? new Date(prm_query.data) : undefined;
     let data_inicio: Date | undefined;
     let data_fim: Date | undefined;
 
-    if (typeof prm_query.dataInicio === "string") {
-        const INICIO = new Date(prm_query.dataInicio);
+    if (typeof prm_query.data_inicio === "string") {
+        const INICIO = new Date(prm_query.data_inicio);
         if (!isNaN(INICIO.getTime())) {
             data_inicio = INICIO;
         }
     }
-    if (typeof prm_query.dataFim === "string") {
-        const FIM = new Date(prm_query.dataFim);
+    if (typeof prm_query.data_fim === "string") {
+        const FIM = new Date(prm_query.data_fim);
         if (!isNaN(FIM.getTime())) {
             // Ajuste de data
             FIM.setDate(FIM.getDate() + 1);
@@ -75,20 +80,21 @@ export function extrairFiltrosDaQuery(prm_query: ParsedQs): {
             itens_por_pagina: ITENS_POR_PAGINA
         },
         filtros: {
-            ...(TERMO_DE_BUSCA !== undefined ? { termoDeBusca: TERMO_DE_BUSCA } : {}),
+            ...(TERMO_DE_BUSCA !== undefined ? { termo_de_busca: TERMO_DE_BUSCA } : {}),
             ...(DATA !== undefined ? { data: DATA } : {}),
-            ...(data_inicio !== undefined ? { dataInicio: data_inicio } : {}),
-            ...(data_fim !== undefined ? { dataFim: data_fim } : {}),
-            ...(ESTADO_ABREVIADO !== undefined ? { estadoAbreviado: ESTADO_ABREVIADO } : {}),
-            ...(ESTADO_ABREVIADO_ORIGEM !== undefined ? { estadoAbreviadoOrigem: ESTADO_ABREVIADO_ORIGEM } : {}),
-            ...(ESTADO_ABREVIADO_DESTINO !== undefined ? { estadoAbreviadoDestino: ESTADO_ABREVIADO_DESTINO } : {}),
-            ...(CODIGO_IBGE !== undefined ? { codigoIbge: CODIGO_IBGE } : {}),
-            ...(CODIGO_IBGE_ORIGEM !== undefined ? { codigoIbgeOrigem: CODIGO_IBGE_ORIGEM } : {}),
-            ...(CODIGO_IBGE_DESTINO !== undefined ? { codigoIbgeDestino: CODIGO_IBGE_DESTINO } : {}),
+            ...(data_inicio !== undefined ? { data_inicio: data_inicio } : {}),
+            ...(data_fim !== undefined ? { data_fim: data_fim } : {}),
+            ...(ESTADO_ABREVIADO !== undefined ? { estado_abreviado: ESTADO_ABREVIADO } : {}),
+            ...(ESTADO_ABREVIADO_ORIGEM !== undefined ? { estado_abreviado_origem: ESTADO_ABREVIADO_ORIGEM } : {}),
+            ...(ESTADO_ABREVIADO_DESTINO !== undefined ? { estado_abreviado_destino: ESTADO_ABREVIADO_DESTINO } : {}),
+            ...(CODIGO_IBGE !== undefined ? { codigo_ibge: CODIGO_IBGE } : {}),
+            ...(CODIGO_IBGE_ORIGEM !== undefined ? { codigo_ibge_origem: CODIGO_IBGE_ORIGEM } : {}),
+            ...(CODIGO_IBGE_DESTINO !== undefined ? { codigo_ibge_destino: CODIGO_IBGE_DESTINO } : {}),
+            ...(ID_FORNECEDOR !== undefined ? { id_fornecedor: ID_FORNECEDOR } : {})
         },
         ordenacao: {
-            ...(COLUNA !== undefined ? { coluna: COLUNA } : {}),
-            direcao: DIRECAO
+            ...(COLUNA !== undefined ? { ordenar_coluna: COLUNA } : {}),
+            ...(DIRECAO !== undefined ? { ordenar_direcao: DIRECAO } : {}),
         }
     };
 }

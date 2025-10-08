@@ -32,6 +32,41 @@ interface PropsTemplateErro {
   infoAjuda?: InfoAjuda;
 }
 
+/**
+ * Componente de template para exibição de páginas de erro personalizadas.
+ *
+ * Exibe informações detalhadas sobre o erro, sugestões de navegação, ações principais/secundárias
+ * e informações de contato para suporte.
+ *
+ * @component
+ *
+ * @param {PropsTemplateErro} props - Propriedades do componente.
+ * @param {string} props.codigoErro - Código do erro a ser exibido (ex: 404, 500).
+ * @param {string} props.titulo - Título principal do erro.
+ * @param {string} props.descricao - Descrição detalhada do erro.
+ * @param {Array<{
+ *   titulo: string;
+ *   descricao: string;
+ *   icone: React.ElementType;
+ *   acao: () => void;
+ * }>} [props.sugestoes=[]] - Lista de sugestões de navegação, cada uma com título, descrição, ícone e ação.
+ * @param {{
+ *   rotulo: string;
+ *   icone?: React.ElementType;
+ *   acao: () => void;
+ * }} props.acaoPrimaria - Ação principal sugerida ao usuário, com rótulo, ícone e função de clique.
+ * @param {{
+ *   rotulo: string;
+ *   icone?: React.ElementType;
+ *   acao: () => void;
+ * }} [props.acaoSecundaria] - Ação secundária opcional, com rótulo, ícone e função de clique.
+ * @param {{
+ *   email: string;
+ *   telefone: string;
+ * }} [props.infoAjuda] - Informações de contato para suporte, incluindo e-mail e telefone.
+ *
+ * @returns {JSX.Element} Estrutura visual da página de erro personalizada.
+ */
 const TemplateErro: React.FC<PropsTemplateErro> = ({
   codigoErro,
   titulo,

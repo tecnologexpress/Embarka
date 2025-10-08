@@ -1,4 +1,3 @@
-import { Estado } from '@/dominios/estado/entidade/estado';
 import dotenv from 'dotenv';
 import { DataSource } from 'typeorm';
 
@@ -16,7 +15,7 @@ export const APP_DATA_SOURCE = new DataSource({
     username: process.env.DB_USER ?? '',
     password: process.env.DB_PASSWORD ?? '',
     database: process.env.DB_NAME ?? '',
-    entities: [Estado, __dirname + '/../../**/entidade/*.{ts,js}'],
+    entities: [__dirname + '/../../**/entidade/*.{ts,js}'],
     logging: false,
     // logger: 'advanced-console', // Para ver logs mais detalhados de erros do banco de dados
     migrations: []

@@ -47,8 +47,8 @@ export class ServicoMunicipio {
 
     async listarMunicipios(
         prm_paginacao: { pagina_atual: number; itens_por_pagina: number },
-        prm_filtros: { termoDeBusca?: string; filtroEstadoAbreviado?: string },
-        prm_ordenacao: { coluna?: string; direcao?: 'ASC' | 'DESC' }
+        prm_filtros: { termo_de_busca?: string; estado_abreviado?: string },
+        prm_ordenacao: { ordenar_coluna?: string; ordenar_direcao?: 'ASC' | 'DESC' }
     ): Promise<ResultadoPaginado<Municipio>> {
         return await this.repositorioMunicipio.listarMunicipios(
             prm_paginacao,

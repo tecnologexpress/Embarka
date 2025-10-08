@@ -5,6 +5,8 @@ import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import AccessDenied from "./pages/AccessDenied";
 import PrivateRoute from "./pages/PrivateRoute";
+import React from "react";
+import JanelaDeColeta from "./pages/operacional/JanelaDeColeta";
 
 const Router = () => {
   return (
@@ -22,7 +24,17 @@ const Router = () => {
 
         {/* Rotas protegidas */}
         <Route element={<PrivateRoute />}>
-          <Route path="/home" element={<Dashboard />} />
+          <React.Fragment>
+            <Route path="/home" element={<Dashboard />} />
+          </React.Fragment>
+
+          {/* Seção Operacional */}
+          <React.Fragment>
+            <Route
+              path="/operacional/janela-de-coleta"
+              element={<JanelaDeColeta />}
+            />
+          </React.Fragment>
         </Route>
       </Routes>
     </BrowserRouter>

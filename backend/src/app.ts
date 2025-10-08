@@ -6,7 +6,7 @@ import rateLimit from 'express-rate-limit';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import { HANDLER_DE_ERROS } from './middleware/erro-handler';
-import { CONFIGURAR_ROTAS } from './rota';
+import { CONFIGURAR_ROTAS } from './infraestrutura/rotas';
 
 // Carrega variáveis de ambiente
 dotenv.config();

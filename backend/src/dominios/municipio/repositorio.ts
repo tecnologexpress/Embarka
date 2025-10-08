@@ -80,19 +80,19 @@ export class RepositorioMunicipio {
     /**
      * Lista todos os municípios.
      * @param prm_paginacao - Parâmetros de paginação
-     * @param prm_filtros - Filtros para a busca (termoDeBusca, estado abreviado)
+     * @param prm_filtros - Filtros para a busca (termo_de_busca, estado abreviado)
      * @param prm_ordenacao - Parâmetros de ordenação
      * @returns Lista paginada de municípios
      */
     async listarMunicipios(
         prm_paginacao: { pagina_atual: number; itens_por_pagina: number },
-        prm_filtros: { termoDeBusca?: string; estadoAbreviado?: string },
-        prm_ordenacao: { coluna?: string; direcao?: 'ASC' | 'DESC' }
+        prm_filtros: { termo_de_busca?: string; estado_abreviado?: string },
+        prm_ordenacao: { ordenar_coluna?: string; ordenar_direcao?: 'ASC' | 'DESC' }
     ): Promise<ResultadoPaginado<Municipio>> {
         const PAG = Math.max(1, Number(prm_paginacao?.pagina_atual ?? 1));
         const LIM = Math.min(1000, Math.max(1, Number(prm_paginacao?.itens_por_pagina ?? 50)));
-        const TERMO = (prm_filtros?.termoDeBusca ?? '').trim() || undefined;
-        const UF = (prm_filtros?.estadoAbreviado ?? '').trim().toUpperCase() || undefined;
+        const TERMO = (prm_filtros?.termo_de_busca ?? '').trim() || undefined;
+        const UF = (prm_filtros?.estado_abreviado ?? '').trim().toUpperCase() || undefined;
 
         const COLUNAS: Record<string, keyof Municipio> = {
             id_municipio: 'id_municipio',
@@ -101,8 +101,8 @@ export class RepositorioMunicipio {
             ds_estado_abreviado: 'ds_estado_abreviado',
         };
         // Prioriza ASC se o usuário não escolher
-        const COL = prm_ordenacao?.coluna ?? 'ds_municipio_ibge';
-        const DIR = prm_ordenacao?.direcao === 'DESC' ? 'DESC' : 'ASC';
+        const COL = prm_ordenacao?.ordenar_coluna ?? 'ds_municipio_ibge';
+        const DIR = prm_ordenacao?.ordenar_direcao === 'DESC' ? 'DESC' : 'ASC';
 
         const WHERE: any[] = [];
         // ✅ filtro por UF

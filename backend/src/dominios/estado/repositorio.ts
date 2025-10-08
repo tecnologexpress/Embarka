@@ -24,12 +24,12 @@ export class EstadoRepositorio {
             itens_por_pagina: number;
         },
         prm_ordenacao: {
-            coluna?: string;
-            direcao?: 'ASC' | 'DESC';
+            ordenar_coluna?: string;
+            ordenar_direcao?: 'ASC' | 'DESC';
         }
     ): Promise<ResultadoPaginado<Estado>> {
         const { pagina_atual: PAGINA_ATUAL, itens_por_pagina: ITENS_POR_PAGINA } = prm_paginacao;
-        const { coluna: COLUNA, direcao: DIRECAO } = prm_ordenacao;
+        const { ordenar_coluna: COLUNA, ordenar_direcao: DIRECAO } = prm_ordenacao;
 
         const SKIP = (PAGINA_ATUAL - 1) * ITENS_POR_PAGINA;
         const TAKE = ITENS_POR_PAGINA;

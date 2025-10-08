@@ -19,8 +19,8 @@ export class EstadoServico {
             itens_por_pagina: number;
         },
         prm_ordenacao: {
-            coluna?: string;
-            direcao?: 'ASC' | 'DESC';
+            ordenar_coluna?: string;
+            ordenar_direcao?: 'ASC' | 'DESC';
         }
     ): Promise<ResultadoPaginado<Estado>> {
         return this.estadoRepositorio.buscarTodosEstados(prm_paginacao, prm_ordenacao);
