@@ -1,8 +1,18 @@
+import logout from "../../services/auth/logout";
 import Logo from "../atoms/Logo";
 import Navbar from "../molecules/Navbar";
 import { Info, Bell, LogOut } from "lucide-react";
 
 const Header = () => {
+  const aoSair = async () => {
+    try {
+      await logout();
+      window.location.href = "/";
+    } catch (error) {
+      console.error("Erro ao sair:", error);
+    }
+  };
+
   return (
     <div className="w-full box-border bg-gradient-to-r from-green-600 via-green-500 to-green-700 px-4">
       <header>
@@ -44,7 +54,7 @@ const Header = () => {
                 cursor="pointer"
                 className="hover:text-blue-700"
               />
-              <button title="Sair">
+              <button title="Sair" onClick={aoSair}>
                 <LogOut
                   size={24}
                   cursor="pointer"
