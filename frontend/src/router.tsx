@@ -5,7 +5,6 @@ import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import AccessDenied from "./pages/AccessDenied";
 import PrivateRoute from "./pages/PrivateRoute";
-import ValidacaoLogin2FA from "./pages/ValidacaoLogin2FA";
 
 const Router = () => {
   return (
@@ -13,7 +12,6 @@ const Router = () => {
       <Routes>
         {/* Rotas públicas */}
         <Route path="/" element={<Login />} />
-        <Route path="/validacao" element={<ValidacaoLogin2FA />} />
         <Route path="/registrar" element={<Registro />} />
 
         {/* Rotas de erro */}

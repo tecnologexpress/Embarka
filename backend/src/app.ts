@@ -5,7 +5,7 @@ import compression from 'compression';
 import rateLimit from 'express-rate-limit';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
-import { HandlerDeErros } from './middleware/erro-handler';
+import { HANDLER_DE_ERROS } from './middleware/erro-handler';
 import { CONFIGURAR_ROTAS } from './rota';
 
 // Carrega variáveis de ambiente
@@ -51,6 +51,6 @@ APP.use(compression());
 CONFIGURAR_ROTAS(APP);
 
 // Middleware de erro (último)
-APP.use(HandlerDeErros);
+APP.use(HANDLER_DE_ERROS);
 
 export default APP;

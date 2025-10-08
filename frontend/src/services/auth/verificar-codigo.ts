@@ -1,6 +1,6 @@
 import { api } from "../../api";
 
-const verificarCodigo = async (codigo: number) => {
+const verificarCodigo = async (codigo: string) => {
     // eslint-disable-next-line no-useless-catch
     try {
         const response = await api.post("/auth/verificar-codigo", { codigo });

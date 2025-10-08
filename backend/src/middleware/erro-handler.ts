@@ -1,5 +1,5 @@
 import { HttpErro } from '@/infraestrutura/erros/http-error';
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 
 /**
  * Manipula erros lançados durante o processamento das requisições.
@@ -13,7 +13,7 @@ import { Request, Response, NextFunction } from 'express';
  * Se o erro for uma instância de HttpErro, retorna o status e a mensagem do erro.
  * Caso contrário, registra o erro no console e retorna um erro genérico 500.
  */
-export const HandlerDeErros = (prm_erro: any, _prm_req: Request, prm_res: Response, _prm_next: NextFunction) => {
+export const HANDLER_DE_ERROS = (prm_erro: any, prm_req: Request, prm_res: Response) => {
     if (prm_erro instanceof HttpErro) {
         return prm_res.status(prm_erro.status).json({ error: prm_erro.message });
     }

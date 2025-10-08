@@ -13,7 +13,9 @@
     "lint:fix": "eslint src/**/*.ts --fix",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "test:smtp": "ts-node -r tsconfig-paths/register teste-smtp.ts",
+    "diagnostico:smtp": "ts-node -r tsconfig-paths/register diagnostico-smtp.ts"
   },
   "keywords": [
     "nodejs",

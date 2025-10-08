@@ -19,6 +19,9 @@ AUTH_ROTA.post("/verificar-codigo", (req, res) => AUTH_CONTROLADOR.verificar2FA(
 // reenvio do código
 AUTH_ROTA.post("/reenviar-codigo", (req, res) => AUTH_CONTROLADOR.reenviar2FA(req, res));
 
+// logout (remove cookie 'token')
+AUTH_ROTA.post("/logout", autenticarToken, (req, res) => AUTH_CONTROLADOR.logout(req, res));
+
 // info do usuário autenticado (precisa token final)
 AUTH_ROTA.get("/me", autenticarToken, (req, res) => AUTH_CONTROLADOR.me(req, res));
 

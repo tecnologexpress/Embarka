@@ -147,6 +147,18 @@ export class AuthControlador {
     }
 
     /**
+ * Faz logout do usuário
+ */
+    async logout(req: Request, res: Response): Promise<void> {
+        try {
+            res.clearCookie("token", { path: "/" });
+            res.status(204).send();
+        } catch (err: any) {
+            tratarErro(res, err, "Erro ao fazer logout");
+        }
+    }
+
+    /**
      * Retorna dados do usuário autenticado pelo token final
      */
     me(req: RequestAutenticado, res: Response): void {
