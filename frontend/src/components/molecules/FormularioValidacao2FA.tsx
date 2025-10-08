@@ -1,20 +1,19 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import { Shield, Mail, RefreshCw, ArrowLeft, CheckCircle } from "lucide-react";
 import Botao from "../atoms/Botao";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import verificarCodigo from "../../services/auth/verificar-codigo";
+import reenviarCodigo from "../../services/auth/reenviar-codigo";
+import { useNavigate } from "react-router-dom";
 
 interface FormularioValidacao2FAProps {
-  email?: string;
-  onValidacao?: (codigo: string) => Promise<void>;
-  onReenvio?: () => Promise<void>;
+  email: string;
+  aoVoltar: () => void;
 }
 
 const FormularioValidacao2FA: React.FC<FormularioValidacao2FAProps> = ({
   email = "usuario@exemplo.com",
-  onValidacao,
-  onReenvio,
+  aoVoltar,
 }) => {
   const [codigo, setCodigo] = useState(["", "", "", "", "", ""]);
   const [loading, setLoading] = useState(false);
@@ -22,6 +21,7 @@ const FormularioValidacao2FA: React.FC<FormularioValidacao2FAProps> = ({
   const [tempoRestante, setTempoRestante] = useState(60);
   const [podeReenviar, setPodeReenviar] = useState(false);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
   const navigate = useNavigate();
 
   // Timer para reenvio
@@ -62,7 +62,7 @@ const FormularioValidacao2FA: React.FC<FormularioValidacao2FAProps> = ({
     if (e.key === "Backspace" && !codigo[index] && index > 0) {
       inputRefs.current[index - 1]?.focus();
     }
-    
+
     // Enter para tentar validar se todos os campos estão preenchidos
     if (e.key === "Enter") {
       const codigoCompleto = codigo.join("");
@@ -76,7 +76,7 @@ const FormularioValidacao2FA: React.FC<FormularioValidacao2FAProps> = ({
     e.preventDefault();
     const pastedText = e.clipboardData.getData("text");
     const digits = pastedText.replace(/\D/g, "").slice(0, 6);
-    
+
     if (digits.length === 6) {
       const novoCodigo = digits.split("");
       setCodigo(novoCodigo);
@@ -87,7 +87,7 @@ const FormularioValidacao2FA: React.FC<FormularioValidacao2FAProps> = ({
 
   const handleValidacao = async () => {
     const codigoCompleto = codigo.join("");
-    
+
     if (codigoCompleto.length !== 6) {
       toast.error("Por favor, digite o código de 6 dígitos completo");
       return;
@@ -95,18 +95,16 @@ const FormularioValidacao2FA: React.FC<FormularioValidacao2FAProps> = ({
 
     setLoading(true);
     try {
-      if (onValidacao) {
-        await onValidacao(codigoCompleto);
-      } else {
-        // Simulação de validação
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        toast.success("Código validado com sucesso!");
-        navigate("/home");
-      }
+      await verificarCodigo(codigoCompleto);
+      await toast.success("Código verificado com sucesso!");
+      navigate("/home");
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : "Código inválido. Tente novamente.";
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Código inválido. Tente novamente.";
       toast.error(errorMessage);
-      // Limpa o código e foca no primeiro input
+
       setCodigo(["", "", "", "", "", ""]);
       inputRefs.current[0]?.focus();
     } finally {
@@ -117,24 +115,20 @@ const FormularioValidacao2FA: React.FC<FormularioValidacao2FAProps> = ({
   const handleReenvio = async () => {
     setReenvioLoading(true);
     try {
-      if (onReenvio) {
-        await onReenvio();
-      } else {
-        // Simulação de reenvio
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        toast.success("Novo código enviado para seu email!");
-      }
-      
+      await reenviarCodigo();
+
       // Reset do timer
       setTempoRestante(60);
       setPodeReenviar(false);
-      
+
       // Limpa os inputs e foca no primeiro
       setCodigo(["", "", "", "", "", ""]);
       inputRefs.current[0]?.focus();
-      
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : "Erro ao reenviar código. Tente novamente.";
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Erro ao reenviar código. Tente novamente.";
       toast.error(errorMessage);
     } finally {
       setReenvioLoading(false);
@@ -161,9 +155,7 @@ const FormularioValidacao2FA: React.FC<FormularioValidacao2FAProps> = ({
             </p>
             <div className="flex items-center justify-center gap-2 mt-2 p-2 bg-gray-50 rounded-lg">
               <Mail className="w-4 h-4 text-gray-500" />
-              <span className="text-sm font-medium text-gray-700">
-                {email}
-              </span>
+              <span className="text-sm font-medium text-gray-700">{email}</span>
             </div>
           </div>
 
@@ -173,7 +165,9 @@ const FormularioValidacao2FA: React.FC<FormularioValidacao2FAProps> = ({
               {codigo.map((digit, index) => (
                 <input
                   key={index}
-                  ref={el => { inputRefs.current[index] = el; }}
+                  ref={(el) => {
+                    inputRefs.current[index] = el;
+                  }}
                   type="text"
                   value={digit}
                   onChange={(e) => handleInputChange(index, e.target.value)}
@@ -198,9 +192,7 @@ const FormularioValidacao2FA: React.FC<FormularioValidacao2FAProps> = ({
                   <div
                     key={index}
                     className={`w-2 h-2 rounded-full transition-colors duration-200 ${
-                      codigo[index]
-                        ? "bg-green-500"
-                        : "bg-gray-300"
+                      codigo[index] ? "bg-green-500" : "bg-gray-300"
                     }`}
                   />
                 ))}
@@ -246,7 +238,7 @@ const FormularioValidacao2FA: React.FC<FormularioValidacao2FAProps> = ({
           {/* Link para voltar */}
           <div className="text-center pt-4 border-t border-gray-200">
             <button
-              onClick={() => navigate("/")}
+              onClick={aoVoltar}
               className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
@@ -259,8 +251,8 @@ const FormularioValidacao2FA: React.FC<FormularioValidacao2FAProps> = ({
         <div className="mt-6 text-center">
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
             <p className="text-sm text-blue-800">
-              <strong>💡 Dica:</strong> O código é válido por 10 minutos. 
-              Se não recebeu o email, verifique sua caixa de spam.
+              <strong>💡 Dica:</strong> O código é válido por 10 minutos. Se não
+              recebeu o email, verifique sua caixa de spam.
             </p>
           </div>
         </div>

@@ -2,19 +2,26 @@ import React, { useState } from "react";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import Input from "../atoms/Input";
 import Button from "../atoms/Botao";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import login from "../../services/auth/login";
-// import { toast } from "react-toastify";
-// import { mensagemDeErro } from "../../utils/mensagem-erro";
+import { toast } from "react-toastify/unstyled";
+import { mensagemDeErro } from "../../utils/mensagem-erro";
 
-const FormularioLogin: React.FC = () => {
-  const [email, setEmail] = useState("");
+interface FormularioLoginProps {
+  email: string;
+  setEmail: (email: string) => void;
+  onLoginSucesso: () => void;
+}
+
+const FormularioLogin: React.FC<FormularioLoginProps> = ({
+  email,
+  setEmail,
+  onLoginSucesso,
+}) => {
   const [senha, setSenha] = useState("");
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const [erros, setErros] = useState<{ email?: string; senha?: string }>({});
   const [loading, setLoading] = useState(false);
-
-  const navigate = useNavigate();
 
   const validarFormulario = () => {
     const novosErros: { email?: string; senha?: string } = {};
@@ -42,14 +49,9 @@ const FormularioLogin: React.FC = () => {
     if (validarFormulario()) {
       try {
         await login(email, senha);
-
-        navigate("/validacao");
-      } catch 
-      // (error)
-      {
-        // PARA TESTE - REMOVER QUANDO 2FA estiver funcionando
-        navigate("/validacao");
-        // toast.error(mensagemDeErro(error));
+        onLoginSucesso();
+      } catch (erro) {
+        toast.error(mensagemDeErro(erro));
       } finally {
         setLoading(false);
       }

@@ -1,4 +1,3 @@
-// src/infraestrutura/email/index.ts
 import nodemailer from "nodemailer";
 
 const HOST = process.env.SMTP_HOST!;
