@@ -2,6 +2,7 @@
  * DTO para criação de uma Pessoa.
  * Inclui apenas os campos necessários para criação.
  */
+// Até o momento, não está sendo usado, futuramente ver necessidade de usar
 export interface CriarPessoaDto {
     ds_documento: string;
     ds_descricao: string;

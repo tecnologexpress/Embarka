@@ -65,6 +65,8 @@ const FormularioLogin: React.FC<FormularioLoginProps> = ({
           type="email"
           rotulo="Email"
           placeholder="seu.email@exemplo.com"
+          minLength={5}
+          maxLength={100}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           icone={Mail}

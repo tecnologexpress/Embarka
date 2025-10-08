@@ -27,8 +27,12 @@ const Header = () => {
           <div className="flex flex-row gap-4 items-center">
             <Info size={24} />
             <Bell size={24} />
-            <button title="Sair">
-              <LogOut size={24} />
+            <button title="Sair" onClick={aoSair}>
+              <LogOut
+                size={24}
+                cursor="pointer"
+                className="hover:text-blue-700"
+              />
             </button>
           </div>
         </div>

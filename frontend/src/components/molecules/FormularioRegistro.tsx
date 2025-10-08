@@ -14,7 +14,6 @@ import {
   X,
 } from "lucide-react";
 import Input from "../atoms/Input";
-import Button from "../atoms/Botao";
 import type { IPessoaDTO } from "../../dto/pessoa";
 import { useLocalizacao } from "../../hooks/useLocalizacao";
 import { useMudancaFormularioUniversal } from "../../hooks/useMudancaFormularioUniversal";
@@ -22,6 +21,7 @@ import registrar from "../../services/registro/registrar";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { mensagemDeErro } from "../../utils/mensagem-erro";
+import Botao from "../atoms/Botao";
 
 // Critérios de validação de senha
 const criteriosSenha = {
@@ -48,26 +48,26 @@ const criteriosSenha = {
 };
 
 const FORMULARIO_INICIAL: IPessoaDTO = {
-    ds_documento: "",
-    ds_descricao: "",
-    dt_origem: "", // Inicia o campo de data vazio
-    ds_email: "",
-    ds_telefone: "",
-    ds_pais: "Brasil",
-    ds_estado: "",
-    nr_codigo_ibge: 0,
-    ds_bairro: "",
-    ds_cep: "",
-    ds_endereco: "",
-    ds_endereco_numero: "",
-    ds_celular: "",
-    ds_site: "",
-    ds_complemento: "",
-    ds_instagram: "",
-    ds_linkedin: "",
-    ds_twitter: "",
-    ds_facebook: "",
-    ds_tratamento: "",
+  ds_documento: "",
+  ds_descricao: "",
+  dt_origem: "", // Inicia o campo de data vazio
+  ds_email: "",
+  ds_telefone: "",
+  ds_pais: "Brasil",
+  ds_estado: "",
+  nr_codigo_ibge: 0,
+  ds_bairro: "",
+  ds_cep: "",
+  ds_endereco: "",
+  ds_endereco_numero: "",
+  ds_celular: "",
+  ds_site: "",
+  ds_complemento: "",
+  ds_instagram: "",
+  ds_linkedin: "",
+  ds_twitter: "",
+  ds_facebook: "",
+  ds_tratamento: "",
 };
 
 const FormularioRegistro = () => {
@@ -149,16 +149,16 @@ const FormularioRegistro = () => {
     if (!validarCamposSenha()) return;
 
     try {
-        setLoading(true);
-        await registrar({ data: formulario, senha });
-        toast.success("Registro cadastrado com sucesso! Efetue o seu login.");
-        navigate('/')
+      setLoading(true);
+      await registrar({ data: formulario, senha });
+      toast.success("Registro cadastrado com sucesso! Efetue o seu login.");
+      navigate("/");
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-        toast.error(mensagemDeErro(error))
+      toast.error(mensagemDeErro(error));
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
   };
 
@@ -548,14 +548,24 @@ const FormularioRegistro = () => {
 
       {/* Ações */}
       <div className="flex flex-col gap-4 pt-8">
-        <Button
-          type="submit"
-          larguraTotal
-          carregando={loading}
-          tamanho="grande"
-        >
-          {loading ? "Criando conta..." : "Criar conta"}
-        </Button>
+        <div className="flex flex-row gap-4 justify-between">
+          <Botao
+            type="button"
+            larguraTotal
+            tamanho="grande"
+            variante="secundario"
+          >
+            Voltar
+          </Botao>
+          <Botao
+            type="submit"
+            larguraTotal
+            carregando={loading}
+            tamanho="grande"
+          >
+            {loading ? "Criando conta..." : "Criar conta"}
+          </Botao>
+        </div>
         <p className="text-start text-sm text-gray-500">
           * Campos obrigatórios
         </p>
