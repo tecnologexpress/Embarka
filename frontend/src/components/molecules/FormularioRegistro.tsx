@@ -554,6 +554,7 @@ const FormularioRegistro = () => {
             larguraTotal
             tamanho="grande"
             variante="secundario"
+            onClick={() => navigate(-1)}
           >
             Voltar
           </Botao>
