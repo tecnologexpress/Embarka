@@ -24,9 +24,9 @@
     "exactOptionalPropertyTypes": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["*"],
+      "@/*": ["src/*"],
       "@/domains/*": ["domains/*"],
       "@/features/*": ["features/*"],
       "@/shared/*": ["shared/*"],

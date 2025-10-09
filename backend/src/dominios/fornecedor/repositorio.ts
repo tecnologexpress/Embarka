@@ -1,4 +1,4 @@
-import { Fornecedor } from './entidade/entidade';
+import { Fornecedor } from './entidade/fornecedor.entidade';
 import { APP_DATA_SOURCE } from '@/infraestrutura/database';
 
 export class FornecedorRepositorio {
@@ -14,7 +14,7 @@ export class FornecedorRepositorio {
     return await this.fornecedorRepositorio.findOneBy({ id_fornecedor: prm_id });
   }
 
-  async criarFornecedor(prm_data: Fornecedor): Promise<Fornecedor> {
+  async salvarFornecedor(prm_data: Partial<Fornecedor>): Promise<Fornecedor> {
     const NOVO_FORNECEDOR = this.fornecedorRepositorio.create(prm_data);
     return await this.fornecedorRepositorio.save(NOVO_FORNECEDOR);
   }

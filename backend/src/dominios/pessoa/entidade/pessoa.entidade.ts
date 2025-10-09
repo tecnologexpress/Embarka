@@ -1,8 +1,11 @@
 import { Entity, PrimaryGeneratedColumn, Column, UpdateDateColumn, CreateDateColumn, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { Estado } from '../../estado/entidade/estado';
 import { Municipio } from '../../municipio/entidade/municipio';
-import { Fornecedor } from '@/dominios/fornecedor/entidade/entidade';
+import { Fornecedor } from '@/dominios/fornecedor/entidade/fornecedor.entidade';
 import { PessoaAcesso } from './pessoa-acesso.entidade';
+import { Embarcador } from '@/dominios/embarcador/entidade/embarcador.entidade';
+import { Cliente } from '@/dominios/cliente/entidade/cliente.entidade';
+import { Transportadora } from '@/dominios/transportadora/entidade/transportadora.entidade';
 
 /**
  * Representa a entidade Pessoa no sistema.
@@ -126,7 +129,16 @@ export class Pessoa {
   municipio!: Municipio;
 
   @OneToOne(() => Fornecedor, prm_fornecedor => prm_fornecedor.pessoa)
-  fornecedor!: Fornecedor;
+  fornecedor?: Fornecedor;
+
+  @OneToOne(() => Embarcador, prm_embarcador => prm_embarcador.pessoa)
+  embarcador?: Embarcador;
+
+  @OneToOne(() => Cliente, prm_cliente => prm_cliente.pessoa)
+  cliente?: Cliente;
+
+  @OneToOne(() => Transportadora, prm_transportadora => prm_transportadora.pessoa)
+  transportadora?: Transportadora;
 
   @OneToOne(() => PessoaAcesso, prm_pessoa_acesso => prm_pessoa_acesso.pessoa)
   pessoaAcesso!: PessoaAcesso;

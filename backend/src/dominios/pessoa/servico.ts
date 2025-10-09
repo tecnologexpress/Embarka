@@ -3,15 +3,24 @@ import { Pessoa } from './entidade/pessoa.entidade';
 import { PessoaRepositorio } from './repositorio';
 import { criarSenhaHash } from '@/utils/senha-hash';
 import { PessoaAcesso } from './entidade/pessoa-acesso.entidade';
+import { FornecedorRepositorio } from '../fornecedor/repositorio';
+import { ClienteRepositorio } from '../cliente/repositorio';
+import { EmbarcadorRepositorio } from '../embarcador/repositorio';
+import { TransportadoraRepositorio } from '../transportadora/repositorio';
 
 export class PessoaServico {
     constructor(
-        private readonly pessoaRepositorio: PessoaRepositorio
+        private readonly pessoaRepositorio: PessoaRepositorio,
+        private readonly fornecedorRepositorio: FornecedorRepositorio,
+        private readonly clienteRepositorio: ClienteRepositorio,
+        private readonly embarcadorRepositorio: EmbarcadorRepositorio,
+        private readonly transportadoraRepositorio: TransportadoraRepositorio
     ) { }
 
     async criarPessoa(
         prm_data: any,
         prm_senha: string,
+        prm_role: "FORNECEDOR" | "CLIENTE" | "EMBARCADOR" | "TRANSPORTADORA",
         // prm_username: string, prm_usuario_ip: string // Parâmetros comentados
     ) {
         // 1. Validação de Duplicidade
@@ -40,6 +49,31 @@ export class PessoaServico {
         NOVO_ACESSO.id_pessoa = PESSOA_CRIADA.id_pessoa; // FK obrigatória
         NOVO_ACESSO.ds_email = PESSOA_CRIADA.ds_email;
         NOVO_ACESSO.ds_senha_hash = SENHA_HASH;
+
+        switch (prm_role) {
+            case "FORNECEDOR": {
+                const NOVO_FORNECEDOR = await this.fornecedorRepositorio.salvarFornecedor({ id_pessoa: PESSOA_CRIADA.id_pessoa });
+                PESSOA_CRIADA.fornecedor = NOVO_FORNECEDOR;
+                break;
+            }
+            case "CLIENTE": {
+                const NOVO_CLIENTE = await this.clienteRepositorio.salvarCliente({ id_pessoa: PESSOA_CRIADA.id_pessoa });
+                PESSOA_CRIADA.cliente = NOVO_CLIENTE;
+                break;
+            }
+            case "EMBARCADOR": {
+                const NOVO_EMBARCADOR = await this.embarcadorRepositorio.salvarEmbarcador({ id_pessoa: PESSOA_CRIADA.id_pessoa });
+                PESSOA_CRIADA.embarcador = NOVO_EMBARCADOR;
+                break;
+            }
+            case "TRANSPORTADORA": {
+                const NOVA_TRANSPORTADORA = await this.transportadoraRepositorio.salvarTransportadora({ id_pessoa: PESSOA_CRIADA.id_pessoa });
+                PESSOA_CRIADA.transportadora = NOVA_TRANSPORTADORA;
+                break;
+            }
+            default:
+                break;
+        }
 
         await this.pessoaRepositorio.salvarPessoaAcesso(NOVO_ACESSO);
 

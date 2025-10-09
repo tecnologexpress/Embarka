@@ -1,4 +1,4 @@
-import { Fornecedor } from './entidade/entidade';
+import { Fornecedor } from './entidade/fornecedor.entidade';
 import { FornecedorRepositorio } from './repositorio';
 
 export class FornecedorServico {
@@ -15,6 +15,6 @@ export class FornecedorServico {
     }
 
     async criarFornecedor(prm_data: Fornecedor): Promise<Fornecedor> {
-        return await this.fornecedorRepositorio.criarFornecedor(prm_data);
+        return await this.fornecedorRepositorio.salvarFornecedor(prm_data);
     }
 }

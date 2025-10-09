@@ -22,6 +22,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { mensagemDeErro } from "../../utils/mensagem-erro";
 import Botao from "../atoms/Botao";
+import Logo from "../atoms/Logo";
 
 // Critérios de validação de senha
 const criteriosSenha = {
@@ -74,6 +75,10 @@ const FormularioRegistro = () => {
   const [formulario, setFormulario] = useState<IPessoaDTO>(FORMULARIO_INICIAL);
   const { estados, municipios, carregandoEstados, carregandoMunicipios } =
     useLocalizacao(formulario.ds_estado);
+
+  const [role, setRole] = useState<
+    "FORNECEDOR" | "CLIENTE" | "EMBARCADOR" | "TRANSPORTADORA"
+  >("CLIENTE");
 
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const [mostrarConfirma, setMostrarConfirma] = useState(false);
@@ -150,7 +155,8 @@ const FormularioRegistro = () => {
 
     try {
       setLoading(true);
-      await registrar({ data: formulario, senha });
+
+      await registrar({ data: formulario, senha, role });
       toast.success("Registro cadastrado com sucesso! Efetue o seu login.");
       navigate("/");
 
@@ -168,12 +174,82 @@ const FormularioRegistro = () => {
       className="w-full max-w-3xl mx-auto bg-white rounded-lg shadow-lg p-8 space-y-8"
     >
       {/* Cabeçalho */}
+      <div className="bg-gradient-to-br from-gray-200 via-gray-100 to-gray-300 rounded-xl p-3 text-center flex flex-col items-center justify-center mb-8">
+        <Logo className="my-4 w-[250px]" />
+        <p className="text-gray-700">É Ver, Prever, Agir e Entregar </p>
+      </div>
+
       <div>
         <h2 className="text-2xl font-bold text-gray-800 text-center">
           Crie sua conta
         </h2>
         <p className="text-sm text-gray-500 text-center mt-1">
           Preencha os dados abaixo para começar a usar a plataforma.
+        </p>
+      </div>
+
+      <div className="mb-12">
+        <label className="block text-sm font-semibold text-gray-800 mb-2">
+          Tipo de conta <span className="text-red-500">*</span>
+        </label>
+        <div className="flex flex-col md:flex-row gap-3">
+          {[
+            {
+              value: "FORNECEDOR",
+              label: "Fornecedor",
+              desc: "Oferece serviços ou produtos",
+            },
+            {
+              value: "CLIENTE",
+              label: "Cliente",
+              desc: "Contrata serviços ou produtos",
+            },
+            {
+              value: "EMBARCADOR",
+              label: "Embarcador",
+              desc: "Responsável pelo envio de cargas",
+            },
+            {
+              value: "TRANSPORTADORA",
+              label: "Transportadora",
+              desc: "Realiza o transporte de cargas",
+            },
+          ].map((option) => (
+            <button
+              key={option.value}
+              type="button"
+              className={`flex-1 border rounded-lg px-4 py-3 text-left transition-all duration-150
+        ${
+          role === option.value
+            ? "border-green-600 bg-green-50 shadow-sm"
+            : "border-gray-300 bg-white hover:border-green-400"
+        }`}
+              onClick={() =>
+                setRole(
+                  option.value as
+                    | "FORNECEDOR"
+                    | "CLIENTE"
+                    | "EMBARCADOR"
+                    | "TRANSPORTADORA"
+                )
+              }
+              aria-pressed={role === option.value}
+            >
+              <span
+                className={`block font-medium text-base ${
+                  role === option.value ? "text-green-700" : "text-gray-800"
+                }`}
+              >
+                {option.label}
+              </span>
+              <span className="block text-xs text-gray-500 mt-1">
+                {option.desc}
+              </span>
+            </button>
+          ))}
+        </div>
+        <p className="text-xs text-gray-500 mt-2">
+          Selecione o perfil que melhor representa sua atuação na plataforma.
         </p>
       </div>
 

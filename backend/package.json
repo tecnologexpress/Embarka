@@ -11,9 +11,9 @@
     "clean": "rimraf dist",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
-    "test": "jest",
+    "test": "jest --runInBand",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
+    "test:cov": "jest --coverage",
     "test:smtp": "ts-node -r tsconfig-paths/register teste-smtp.ts",
     "diagnostico:smtp": "ts-node -r tsconfig-paths/register diagnostico-smtp.ts"
   },

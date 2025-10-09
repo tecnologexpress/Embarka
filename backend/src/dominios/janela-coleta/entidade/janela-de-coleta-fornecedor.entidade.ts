@@ -8,7 +8,7 @@ import {
     UpdateDateColumn,
     Index,
 } from "typeorm";
-import { Fornecedor } from "@/dominios/fornecedor/entidade/entidade";
+import { Fornecedor } from "@/dominios/fornecedor/entidade/fornecedor.entidade";
 
 /**
  * Tabela: JANELA_DE_COLETA_FORNECEDOR
