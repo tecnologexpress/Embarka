@@ -30,7 +30,7 @@ const EsqueciASenha = () => {
       <div className="max-w-md w-full bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
         <div className="p-8">
           <div className="flex flex-col items-center text-center mb-8">
-            <Logo className="mb-4 w-48" />
+            <Logo className="w-48 mb-8" />
             <h2 className="text-3xl font-bold text-gray-900">
               Esqueceu sua senha?
             </h2>
@@ -48,8 +48,9 @@ const EsqueciASenha = () => {
                   Link enviado!
                 </h3>
                 <p className="text-green-700">
-                  Enviamos um link de recuperação para <strong>{email}</strong>.
-                  Por favor, verifique sua caixa de entrada e pasta de spam.
+                  Se o e-mail informado estiver cadastrado, você receberá um
+                  link de recuperação em breve. Por favor, verifique sua caixa
+                  de entrada e pasta de spam.
                 </p>
               </div>
               <Link
