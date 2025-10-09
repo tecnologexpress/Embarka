@@ -6,7 +6,12 @@ import THead from "../tabela/THead";
 import Tabela from "../tabela/Tabela";
 import SpinnerCarregamento from "../atoms/SpinnerCarregamento";
 import DadosVazios from "./NenhumDadoEncontradoTemplate";
-import { FileQuestion } from "lucide-react";
+import {
+  FileQuestion,
+  ChevronUp,
+  ChevronDown,
+  ChevronsUpDown,
+} from "lucide-react";
 import TRCorpo from "../tabela/TrBody";
 import TrCabecalho from "../tabela/TrCabecalho";
 
@@ -48,18 +53,16 @@ const IconeOrdenacao = (
   ordenarColuna?: string,
   ordenarDirecao?: "ASC" | "DESC"
 ) => {
-  if (coluna !== ordenarColuna)
+  if (coluna !== ordenarColuna) {
     return (
-      // Ícone neutro com classes mais semânticas
-      <span className="text-sm text-gray-400 flex flex-col leading-none ml-1">
-        ⇅
-      </span>
+      <ChevronsUpDown className="w-4 h-4 text-gray-400 transition-colors duration-200" />
     );
-  // Ícones mais claros
+  }
+
   return ordenarDirecao === "ASC" ? (
-    <span className="text-sm ml-1">▲</span>
+    <ChevronUp className="w-4 h-4 text-green-600 transition-colors duration-200" />
   ) : (
-    <span className="text-sm ml-1">▼</span>
+    <ChevronDown className="w-4 h-4 text-green-600 transition-colors duration-200" />
   );
 };
 
@@ -156,9 +159,8 @@ const TabelaGenerica = <T extends object>({
     if (carregando) {
       return (
         <TRCorpo>
-          <Td colSpan={colSpanTotal}>
-            <div className="flex justify-center py-8">
-              {/* Assumindo que SpinnerCarregamento é um componente válido */}
+          <Td colSpan={colSpanTotal} className="text-center">
+            <div className="flex justify-center items-center py-12">
               <SpinnerCarregamento />
             </div>
           </Td>
@@ -169,8 +171,8 @@ const TabelaGenerica = <T extends object>({
     if (dados.length === 0) {
       return (
         <TRCorpo>
-          <Td colSpan={colSpanTotal}>
-            <div className="flex justify-center py-8">
+          <Td colSpan={colSpanTotal} className="text-center">
+            <div className="flex justify-center py-12">
               <DadosVazios
                 titulo={tituloMensagemVazia}
                 descricao={tituloDescricaoVazia}
@@ -190,7 +192,7 @@ const TabelaGenerica = <T extends object>({
           const keyValue = index;
 
           return (
-            <TrCabecalho key={keyValue} className="border-t">
+            <TRCorpo key={keyValue} clickable={false}>
               {colunas.map((col) => {
                 const VALOR = obterValorAninhado(item, String(col.key));
 
@@ -208,17 +210,14 @@ const TabelaGenerica = <T extends object>({
                   <Td
                     key={String(col.key)}
                     title={titleAttr}
-                    className={`
-                      ${col.width || "max-w-[300px]"} 
-                      truncate 
-                      text-gray-700
-                    `}
+                    truncate={true}
+                    className={col.width ? `w-${col.width}` : ""}
                   >
                     {conteudo}
                   </Td>
                 );
               })}
-            </TrCabecalho>
+            </TRCorpo>
           );
         })}
       </>
@@ -226,40 +225,47 @@ const TabelaGenerica = <T extends object>({
   };
 
   return (
-    <div className="overflow-x-auto w-full">
-      <Tabela className="min-w-full text-center text-sm data-table">
-        <THead>
-          <TrCabecalho className="text-gray-600 border-b">
-            {colunas.map((col, index) => (
-              <Th
-                key={index}
-                className={`
-                  ${col.width || "max-w-[300px]"}
-                  ${
-                    col.ordenavel && onOrdenarColuna
-                      ? "cursor-pointer"
-                      : "cursor-default"
-                  }
-                `}
-                onClick={() =>
-                  col.ordenavel && onOrdenarColuna?.(String(col.key))
-                }
-              >
-                <span className="flex items-center gap-1 font-semibold">
-                  {col.label}
-                  {col.ordenavel &&
-                    IconeOrdenacao(
-                      String(col.key),
-                      ordenarColuna,
-                      ordenarDirecao
-                    )}
-                </span>
-              </Th>
-            ))}
-          </TrCabecalho>
-        </THead>
-        <TBody>{renderizarCorpo()}</TBody>
-      </Tabela>
+    <div className="w-full">
+      {/* Wrapper responsivo com scroll horizontal em telas pequenas */}
+      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+        <div className="overflow-x-auto">
+          <Tabela className="table-auto min-w-full">
+            <THead>
+              <TrCabecalho>
+                {colunas.map((col, index) => (
+                  <Th
+                    key={index}
+                    ordenavel={col.ordenavel}
+                    className={`
+                      ${col.width ? `w-${col.width}` : "min-w-0"}
+                      ${
+                        col.ordenavel && onOrdenarColuna ? "cursor-pointer" : ""
+                      }
+                    `}
+                    onClick={() =>
+                      col.ordenavel && onOrdenarColuna?.(String(col.key))
+                    }
+                  >
+                    <div className="flex items-center justify-center">
+                      <span className="font-semibold">{col.label}</span>
+                      {col.ordenavel && (
+                        <div className="ml-2 flex-shrink-0">
+                          {IconeOrdenacao(
+                            String(col.key),
+                            ordenarColuna,
+                            ordenarDirecao
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </Th>
+                ))}
+              </TrCabecalho>
+            </THead>
+            <TBody>{renderizarCorpo()}</TBody>
+          </Tabela>
+        </div>
+      </div>
     </div>
   );
 };

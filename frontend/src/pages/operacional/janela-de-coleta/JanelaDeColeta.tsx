@@ -30,9 +30,11 @@ const JanelaDeColeta = () => {
     [itens]
   );
 
+  const fecharModal = useCallback(() => setModalAberto(false), []);
+
   const carregarLista = useCallback(async () => {
     try {
-      setCarregando(true);
+      // setCarregando(true);
       const resultados = await listarJanelaDeColetaFornecedor({});
 
       const dados = Array.isArray(resultados)
@@ -50,7 +52,7 @@ const JanelaDeColeta = () => {
 
   useEffect(() => {
     carregarLista();
-  }, [carregarLista]);
+  }, [modalAberto, carregarLista]);
 
   const abrirModalCriar = useCallback(() => {
     setModo("criar");
@@ -63,8 +65,6 @@ const JanelaDeColeta = () => {
     setEditando(item);
     setModalAberto(true);
   }, []);
-
-  const fecharModal = useCallback(() => setModalAberto(false), []);
 
   const handleExclusao = useCallback(
     async (id: number) => {
@@ -98,7 +98,7 @@ const JanelaDeColeta = () => {
     },
     {
       key: "hr_horario_inicio",
-      label: "Janela",
+      label: "Janela de Coleta",
       renderizador: (item) =>
         `${item.hr_horario_inicio} — ${item.hr_horario_fim}`,
     },
@@ -118,7 +118,7 @@ const JanelaDeColeta = () => {
       width: "w-[120px]",
       // Implementa o renderizador para os botões de Ação
       renderizador: (item) => (
-        <div className="flex items-center justify-end gap-2">
+        <div className="flex items-center justify-center gap-2 m-auto">
           <button
             onClick={() => abrirModalEditar(item)}
             className="rounded-lg border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-50"

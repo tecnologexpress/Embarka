@@ -2,9 +2,12 @@ interface ITabelaProps extends React.TableHTMLAttributes<HTMLTableElement> {
   children: React.ReactNode;
 }
 
-const Tabela = ({ children, ...props }: ITabelaProps) => {
+const Tabela = ({ children, className, ...props }: ITabelaProps) => {
   return (
-    <table className="w-full shadow-md mb-4" {...props}>
+    <table 
+      className={`w-full divide-y divide-gray-200 ${className || ''}`} 
+      {...props}
+    >
       {children}
     </table>
   );
