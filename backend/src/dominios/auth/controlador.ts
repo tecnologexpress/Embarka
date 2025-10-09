@@ -147,8 +147,8 @@ export class AuthControlador {
     }
 
     /**
- * Faz logout do usuário
- */
+     * Faz logout do usuário
+     */
     async logout(req: Request, res: Response): Promise<void> {
         try {
             res.clearCookie("token", { path: "/" });

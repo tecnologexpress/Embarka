@@ -1,12 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Registro from "./pages/Registro";
-import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import AccessDenied from "./pages/AccessDenied";
 import PrivateRoute from "./pages/PrivateRoute";
 import React from "react";
 import JanelaDeColeta from "./pages/operacional/janela-de-coleta/JanelaDeColeta";
+import Home from "./pages/Home";
 
 const Router = () => {
   return (
@@ -25,7 +25,7 @@ const Router = () => {
         {/* Rotas protegidas */}
         <Route element={<PrivateRoute />}>
           <React.Fragment>
-            <Route path="/home" element={<Dashboard />} />
+            <Route path="/home" element={<Home />} />
           </React.Fragment>
 
           {/* Seção Operacional */}
