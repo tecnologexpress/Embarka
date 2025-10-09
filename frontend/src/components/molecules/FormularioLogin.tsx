@@ -4,8 +4,8 @@ import Input from "../atoms/Input";
 import Button from "../atoms/Botao";
 import { Link } from "react-router-dom";
 import login from "../../services/auth/login";
-import { toast } from "react-toastify/unstyled";
 import { mensagemDeErro } from "../../utils/mensagem-erro";
+import { toast } from "react-toastify";
 
 interface FormularioLoginProps {
   email: string;
@@ -44,17 +44,22 @@ const FormularioLogin: React.FC<FormularioLoginProps> = ({
 
   const aoSubmeter = async (e: React.FormEvent) => {
     e.preventDefault();
-
     setLoading(true);
-    if (validarFormulario()) {
-      try {
-        await login(email, senha);
-        onLoginSucesso();
-      } catch (erro) {
-        toast.error(mensagemDeErro(erro));
-      } finally {
-        setLoading(false);
-      }
+
+    const ok = validarFormulario();
+    if (!ok) {
+      setLoading(false); // <- desmarca o loading aqui também
+      return;
+    }
+
+    try {
+      await login(email, senha);
+      onLoginSucesso();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (erro: any) {
+      toast.error(mensagemDeErro(erro));
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -110,12 +115,12 @@ const FormularioLogin: React.FC<FormularioLoginProps> = ({
           <span className="ml-2 text-sm text-gray-600">Lembrar-me</span>
         </label>
 
-        <a
-          href="#"
+        <Link
+          to="/esqueci-a-senha"
           className="text-sm text-green-600 hover:text-green-500 transition-colors"
         >
           Esqueceu a senha?
-        </a>
+        </Link>
       </div>
 
       <Button type="submit" larguraTotal carregando={loading} tamanho="grande">

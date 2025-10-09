@@ -24,7 +24,7 @@ export class AuthServico {
 
         const SENHA_VALIDA = await validarSenhaHash(prm_senha, PESSOA_SENHA_HASH);
         if (!SENHA_VALIDA) {
-            throw new HttpErro(401, 'Senha inválida. Verifique os campos e tente novamente.');
+            throw new HttpErro(401, 'Credenciais inválidas. Verifique os campos e tente novamente.');
         }
 
         const ROLE_PESSOA = await this.pessoaRepositorio.verificarRolePessoa(PESSOA.ds_email);

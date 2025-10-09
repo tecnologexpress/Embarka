@@ -7,6 +7,8 @@ import PrivateRoute from "./pages/PrivateRoute";
 import React from "react";
 import JanelaDeColeta from "./pages/operacional/janela-de-coleta/JanelaDeColeta";
 import Home from "./pages/Home";
+import EsqueciASenha from "./pages/EsqueciASenha";
+import ResetarSenha from "./pages/ResetarSenha";
 
 const Router = () => {
   return (
@@ -15,6 +17,8 @@ const Router = () => {
         {/* Rotas públicas */}
         <Route path="/" element={<Login />} />
         <Route path="/registrar" element={<Registro />} />
+        <Route path="/esqueci-a-senha" element={<EsqueciASenha />} />
+        <Route path="/resetar-senha" element={<ResetarSenha />} />
 
         {/* Rotas de erro */}
         <Route path="/403" element={<AccessDenied />} />

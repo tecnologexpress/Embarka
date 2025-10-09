@@ -90,4 +90,11 @@ export class PessoaRepositorio {
 
     return role;
   }
+
+  async atualizarSenhaHashPorPessoaId(prm_id_pessoa: number, prm_nova_senha_hash: string): Promise<void> {
+    await this.pessoaAcessoRepositorio.update(
+      { id_pessoa: prm_id_pessoa },
+      { ds_senha_hash: prm_nova_senha_hash }
+    );
+  }
 }
