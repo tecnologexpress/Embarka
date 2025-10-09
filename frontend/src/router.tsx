@@ -6,7 +6,7 @@ import NotFound from "./pages/NotFound";
 import AccessDenied from "./pages/AccessDenied";
 import PrivateRoute from "./pages/PrivateRoute";
 import React from "react";
-import JanelaDeColeta from "./pages/operacional/JanelaDeColeta";
+import JanelaDeColeta from "./pages/operacional/janela-de-coleta/JanelaDeColeta";
 
 const Router = () => {
   return (

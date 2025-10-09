@@ -4,7 +4,7 @@ import { extrairFiltrosDaQuery } from "@/types/filtros-query";
 import { tratarErro } from "@/infraestrutura/erros/tratar-erro";
 import { RequestAutenticado } from "@/middleware/autenticar-token";
 import { HttpErro } from "@/infraestrutura/erros/http-error";
-import { ICriarJanelaDeColeta } from "./dtos";
+import { IAtualizarJanelaDeColetaDto, ICriarJanelaDeColeta } from "./dtos";
 
 export class JanelaColetaControlador {
     constructor(
@@ -29,7 +29,9 @@ export class JanelaColetaControlador {
 
     async atualizarJanelaDeColeta(req: Request, res: Response) {
         try {
-            const RESULTADO = await this.janelaColetaServico.atualizarJanelaDeColeta(req.body);
+            const DADOS: IAtualizarJanelaDeColetaDto = req.body;
+
+            const RESULTADO = await this.janelaColetaServico.atualizarJanelaDeColeta(DADOS);
             res.json(RESULTADO);
         } catch (erro) {
             tratarErro(res, erro, "Erro ao atualizar janela de coletas de fornecedor");
@@ -39,6 +41,9 @@ export class JanelaColetaControlador {
     async removerJanelaDeColeta(req: Request, res: Response) {
         try {
             const ID = Number(req.params.id);
+            if (isNaN(ID) || ID <= 0) {
+                throw new HttpErro(400, "ID inválido.");
+            }
 
             await this.janelaColetaServico.removerJanelaDeColeta(ID);
             res.status(204).send();
@@ -47,13 +52,20 @@ export class JanelaColetaControlador {
         }
     }
 
-    async listarJanelas(req: Request, res: Response) {
+    async listarJanelas(req: RequestAutenticado, res: Response) {
         try {
             // eslint-disable-next-line @typescript-eslint/naming-convention
             const { filtros } = extrairFiltrosDaQuery(req.query);
 
-            const RESULTADO = await this.janelaColetaServico.listarJanelas(filtros);
-            res.json(RESULTADO);
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            const { id_pessoa } = req.token || {};
+            if (!id_pessoa) {
+                throw new HttpErro(401, "Token inválido ou não fornecido.");
+            }
+
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            const { resultados } = await this.janelaColetaServico.listarJanelas(id_pessoa, filtros);
+            res.json(resultados);
         } catch (erro) {
             tratarErro(res, erro, "Erro ao listar janela de coleta de fornecedor.");
         }

@@ -1,7 +1,7 @@
 import { api } from "../../../api";
-import type { parametrosDeQuery } from "../../../tipos/parametros-query";
+import type { IParametrosDeQuery } from "../../../tipos/parametros-query";
 
-const listarJanelaDeColetaFornecedor = async (params: parametrosDeQuery) => {
+const listarJanelaDeColetaFornecedor = async (params: IParametrosDeQuery) => {
     try {
         const resultado = await api.get("/janela-coleta-fornecedor/", { params });
         return resultado.data;

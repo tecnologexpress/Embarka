@@ -1,5 +1,6 @@
 import { APP_DATA_SOURCE } from "@/infraestrutura/database";
 import { JanelaDeColetaFornecedor } from "./entidade/janela-de-coleta-fornecedor.entidade";
+import { ResultadoPaginado } from "@/types/resultado-paginado";
 
 export class JanelaColetaRepositorio {
     constructor(
@@ -31,23 +32,25 @@ export class JanelaColetaRepositorio {
     }
 
     async listarJanelas(
-        prm_filtros: {
+        prm_id_fornecedor?: number,
+        prm_filtros?: {
             dia_da_semana?: string;
-            id_fornecedor?: number;
         }
-    ) {
-        const QUERY = this.repositorioJanela.createQueryBuilder("j");
-        QUERY.andWhere("j.id_fornecedor = :idf", { idf: prm_filtros.id_fornecedor });
+    ): Promise<ResultadoPaginado<JanelaDeColetaFornecedor>> {
 
-        if (prm_filtros.dia_da_semana) {
+        const QUERY = this.repositorioJanela.createQueryBuilder("j");
+        QUERY.andWhere("j.id_fornecedor = :idf", { idf: prm_id_fornecedor });
+
+        if (prm_filtros && prm_filtros.dia_da_semana) {
             QUERY.andWhere("j.ds_dia_da_semana = :dia", { dia: prm_filtros.dia_da_semana.toUpperCase() });
         }
 
         const [REGISTROS, TOTAL] = await QUERY.getManyAndCount();
+
         return {
-            registros: REGISTROS,
-            total: TOTAL,
-            pagina: 1,
+            resultados: REGISTROS,
+            total_itens: TOTAL,
+            pagina_atual: 1,
             itens_por_pagina: 10,
         };
     }

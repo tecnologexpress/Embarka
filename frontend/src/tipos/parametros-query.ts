@@ -1,9 +1,9 @@
-interface OrdenacaoColunas {
+interface TOrdenacaoColunas {
     ordenarColuna?: string;
     ordenarDirecao?: 'ASC' | 'DESC';
 }
 
-export interface parametrosDeQuery extends OrdenacaoColunas {
+export interface IParametrosDeQuery extends TOrdenacaoColunas {
     termo_de_busca?: string;
     pagina_atual?: number;
     itens_por_pagina?: number;

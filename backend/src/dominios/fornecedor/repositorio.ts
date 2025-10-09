@@ -24,6 +24,9 @@ export class FornecedorRepositorio {
   }
 
   async obterFornecedorPorIdPessoa(prm_id_pessoa: number): Promise<Fornecedor | null> {
-    return this.fornecedorRepositorio.findOneBy({ id_pessoa: prm_id_pessoa });
+    return this.fornecedorRepositorio.findOne({
+      where: { pessoa: { id_pessoa: prm_id_pessoa } },
+      relations: ['pessoa'],
+    });
   }
 }

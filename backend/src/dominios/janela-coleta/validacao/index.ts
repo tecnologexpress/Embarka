@@ -38,11 +38,11 @@ export const VALIDAR_CRIAR_GRADE: ValidationChain[] = [
         .matches(HORA_REGEX).withMessage("Horário final inválido (HH:mm ou HH:mm:ss)"),
 
     // validações do intervalo (opcional)
-    body("hr_intervalo_inicio")
+    body("hr_horario_intervalo_inicio")
         .optional({ nullable: true })
         .matches(HORA_REGEX).withMessage("Horário de início do intervalo inválido (HH:mm ou HH:mm:ss)"),
 
-    body("hr_intervalo_fim")
+    body("hr_horario_intervalo_fim")
         .optional({ nullable: true })
         .matches(HORA_REGEX).withMessage("Horário de fim do intervalo inválido (HH:mm ou HH:mm:ss)"),
 
@@ -58,9 +58,9 @@ export const VALIDAR_CRIAR_GRADE: ValidationChain[] = [
         return true;
     }),
 
-    body(["hr_intervalo_inicio", "hr_intervalo_fim"]).custom((prm_unused, { req }) => {
-        const IV_INI = req.body.hr_intervalo_inicio;
-        const IV_FIM = req.body.hr_intervalo_fim;
+    body(["hr_horario_intervalo_inicio", "hr_horario_intervalo_fim"]).custom((prm_unused, { req }) => {
+        const IV_INI = req.body.hr_horario_intervalo_inicio;
+        const IV_FIM = req.body.hr_horario_intervalo_fim;
 
         // se um veio, o outro é obrigatório
         if ((IV_INI && !IV_FIM) || (!IV_INI && IV_FIM)) {
@@ -86,7 +86,7 @@ export const VALIDAR_CRIAR_GRADE: ValidationChain[] = [
 ];
 
 export const VALIDAR_ATUALIZAR_GRADE: ValidationChain[] = [
-    body("id_janela_de_coleta").isInt({ gt: 0 }).withMessage("ID inválido"),
+    body("id_janela_de_coleta_fornecedor").isInt({ gt: 0 }).withMessage("ID inválido"),
     body("ds_dia_da_semana")
         .optional()
         .customSanitizer((prm_v) => String(prm_v).trim().toUpperCase())
@@ -100,11 +100,11 @@ export const VALIDAR_ATUALIZAR_GRADE: ValidationChain[] = [
         .optional({ nullable: true })
         .matches(HORA_REGEX).withMessage("Horário final inválido (HH:mm ou HH:mm:ss)"),
 
-    body("hr_intervalo_inicio")
+    body("hr_horario_intervalo_inicio")
         .optional({ nullable: true })
         .matches(HORA_REGEX).withMessage("Horário de início do intervalo inválido (HH:mm ou HH:mm:ss)"),
 
-    body("hr_intervalo_fim")
+    body("hr_horario_intervalo_fim")
         .optional({ nullable: true })
         .matches(HORA_REGEX).withMessage("Horário de fim do intervalo inválido (HH:mm ou HH:mm:ss)"),
 
@@ -120,9 +120,9 @@ export const VALIDAR_ATUALIZAR_GRADE: ValidationChain[] = [
         return true;
     }),
 
-    body(["hr_intervalo_inicio", "hr_intervalo_fim"]).custom((prm_unused, { req }) => {
-        const IV_INI = req.body.hr_intervalo_inicio;
-        const IV_FIM = req.body.hr_intervalo_fim;
+    body(["hr_horario_intervalo_inicio", "hr_horario_intervalo_fim"]).custom((prm_unused, { req }) => {
+        const IV_INI = req.body.hr_horario_intervalo_inicio;
+        const IV_FIM = req.body.hr_horario_intervalo_fim;
         if ((IV_INI && !IV_FIM) || (!IV_INI && IV_FIM)) {
             throw new Error("Para intervalo, informe os dois campos (início e fim)");
         }

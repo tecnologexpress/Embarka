@@ -34,9 +34,7 @@ JANELA_COLETA_FORNECEDOR_ROTA.delete("/:id",
     (req, res) => JANELA_COLETA_FORNECEDOR_CONTROLADOR.removerJanelaDeColeta(req, res)
 );
 
-JANELA_COLETA_FORNECEDOR_ROTA.get("/",
-    autenticarToken,
-    (req, res) => JANELA_COLETA_FORNECEDOR_CONTROLADOR.listarJanelas(req, res)
+JANELA_COLETA_FORNECEDOR_ROTA.get("/", autenticarToken, (req, res) => JANELA_COLETA_FORNECEDOR_CONTROLADOR.listarJanelas(req, res)
 );
 
 export default JANELA_COLETA_FORNECEDOR_ROTA;
